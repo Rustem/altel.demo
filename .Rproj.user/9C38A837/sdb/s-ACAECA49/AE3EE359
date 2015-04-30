@@ -1,0 +1,17 @@
+{
+    "contents" : "// When locator icon in datatable is clicked, go to that spot on the map\n$(document).on(\"click\", \".watch-kpi\", function(e) {\n  e.preventDefault();\n  $el = $(this);\n  var bsID = $el.data(\"targetId\");\n  $($('#nav a[data-value=\"kpi\"')).tab('show');\n  console.log($($('#nav a[data-value=\"kpi\"')), 'fasjdkfjasdkljflksdj')\n  Shiny.onInputChange(\"gotoKPI\", {\n    id: bsID,\n    nonce: Math.random()\n  });\n});\n\n$(document).on('click', '.go-map', function(e) {\n  e.preventDefault();\n  $el = $(this);\n  var bsID = $el.data('id');\n  $($(\"#nav a\")[0]).tab(\"show\");\n  Shiny.onInputChange('goto', {\n    id: bsID,\n    nonce: Math.random()\n  })\n});\n",
+    "created" : 1430287203166.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3210662044",
+    "id" : "AE3EE359",
+    "lastKnownWriteTime" : 1430299507,
+    "path" : "~/work/projects/r/shiny/altel.demo/static/js/main.js",
+    "project_path" : "static/js/main.js",
+    "properties" : {
+    },
+    "relative_order" : 5,
+    "source_on_save" : false,
+    "type" : "js"
+}

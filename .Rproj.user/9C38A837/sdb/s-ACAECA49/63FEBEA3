@@ -1,0 +1,17 @@
+{
+    "contents" : "library(plyr)\nlibrary(dplyr)\npj <- function(...) { paste(..., sep='/') }\ndata_dir <- pj(getwd(), 'data')\nCOLORS <- c('#FF0000', '#FFFF00', '#33FF66')\nCOLOR_NAMES <- c('bad', 'normal', 'ok')\nKZ_CNTR <- c(48.005284, 66.9045435)\nKZ_BND_UPPERLEFT <- c(54.329912, 46.426028)\nKZ_BND_DOWNRIGHT <- c(40.930859, 85.625246)\ncheckStatus <- function(statuses) {\n  \n  chk <- function(st) {\n    val <- NA\n    if(st == 'ok') {\n      val <- COLORS[3]\n    } else if(st == 'off_air') {\n      val <- COLORS[1]\n    } else if(as.integer(as.character(st)) >= 50 & as.integer(as.character(st)) <= 100) {\n      val <- COLORS[2]\n    } else {\n      val <- COLORS[1]\n    }\n    return(val)\n  }\n  return(unlist(Map(chk, statuses)))\n}\n\nraw_csv <- read.csv(pj(data_dir, 'cities.csv'))\ncities <- raw_csv %>%\n  select(\n    city = RegionName,\n    lat = Latitude,\n    lon = Longitude\n  )\ncities <- mutate(cities, zoom=8)\ncities <- rbind(data.frame(city='Kazakhstan', lat=KZ_CNTR[1], lon=KZ_CNTR[2], zoom=5), cities)\n\n\ncity_list <- as.character(cities$city)\nnames(city_list) <- city_list\n\nraw_csv <- read.csv(pj(data_dir, 'base_stations.csv'))\nbase_stations <- raw_csv %>%\n  select(\n    id = BaseStationId,\n    city = City,\n    model = Model,\n    manufacturer = Manufacturer,\n    lat = Latitude,\n    lon = Longitude,\n    status = Status,\n    connAbons = ConnAbons,\n    technology = Technology\n  )\nbase_stations <- mutate(base_stations, color=checkStatus(status))\n\nkpi_transform <- function(data) {\n  rv <- data %>%\n    select(\n      id = BaseStationId,\n      year = year,\n      month = month,\n      day = day,\n      success_call_rate = success_call_rate,\n      fail_rate = fail_rate,\n      cell_avail = cell_avail,\n      max_active_abon = max_active_abon,\n      overload_rate = overload_rate\n    )\n  return(rv)\n}\n\nkpi_2g <- kpi_transform(read.csv(pj(data_dir, 'kpi_2g.csv')))\nkpi_3g <- kpi_transform(read.csv(pj(data_dir, 'kpi_3g.csv')))\nkpi_lte <- kpi_transform(read.csv(pj(data_dir, 'kpi_lte.csv')))",
+    "created" : 1430216553758.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2366109642",
+    "id" : "63FEBEA3",
+    "lastKnownWriteTime" : 1430366493,
+    "path" : "~/work/projects/r/shiny/altel.demo/global.R",
+    "project_path" : "global.R",
+    "properties" : {
+    },
+    "relative_order" : 3,
+    "source_on_save" : false,
+    "type" : "r_source"
+}
